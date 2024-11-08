@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Api, Resource
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -13,4 +14,5 @@ class HelloWorld(Resource):
 api.add_resource(HelloWorld, '/api/hello')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    env = os.getenv('FLASK_ENV', 'development')
+    app.run(debug=(env == 'development'))
