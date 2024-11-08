@@ -9,7 +9,7 @@ CORS(app)
 
 class HelloWorld(Resource):
     def get(self):
-        return jsonify({"message": "Hello, world!"})
+        return jsonify({"message": "Hello, !"})
 
 api.add_resource(HelloWorld, '/api/hello')
 
