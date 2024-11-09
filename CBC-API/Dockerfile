@@ -16,6 +16,9 @@ RUN apt-get update && \
 # Make OpenSCAD AppImage executable
 RUN chmod +x ./bin/openscad.AppImage
 
+# Check OpenSCAD version
+RUN ./bin/openscad.AppImage -v
+
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
