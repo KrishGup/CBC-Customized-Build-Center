@@ -15,6 +15,7 @@
           "options": {
             "outputPath": "dist/angular-app",
             "index": "src/index.html",
+            "baseHref": "/CBC-Customized-Build-Center",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -49,7 +50,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "baseHref": "/CBC-Customized-Build-Center/"
             },
             "development": {
               "optimization": false,
