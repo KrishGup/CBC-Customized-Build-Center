@@ -17,11 +17,8 @@ RUN apt-get update && \
 RUN wget -O /app/openscad.AppImage https://files.openscad.org/OpenSCAD-2021.01-x86_64.AppImage && \
     chmod +x /app/openscad.AppImage
 
-# Check OpenSCAD version
-RUN /app/openscad.AppImage -v || true
-
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the application
-CMD ["gunicorn", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
