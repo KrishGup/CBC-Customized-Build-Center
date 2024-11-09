@@ -9,6 +9,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
+OPENSCAD_PATH = '/app/openscad.AppImage'  # Update this path to the actual location of OpenSCAD executable on your system
 
 class HelloWorld(Resource):
     def get(self):
@@ -23,7 +24,7 @@ class RenderScad(Resource):
             scad_file_path = scad_file.name
         png_file_path = scad_file_path.replace('.scad', '.png')
         try:
-            result = subprocess.run(['openscad', '-o', png_file_path, scad_file_path], check=True, capture_output=True, text=True)
+            result = subprocess.run([OPENSCAD_PATH, '-o', png_file_path, scad_file_path], check=True, capture_output=True, text=True)
             logging.info(f"OpenSCAD output: {result.stdout}")
         except FileNotFoundError:
             logging.error("OpenSCAD executable not found. Ensure it is installed and in the system's PATH.")
@@ -42,7 +43,7 @@ class GetStl(Resource):
             scad_file_path = scad_file.name
         stl_file_path = scad_file_path.replace('.scad', '.stl')
         try:
-            result = subprocess.run(['openscad', '-o', stl_file_path, scad_file_path], check=True, capture_output=True, text=True)
+            result = subprocess.run([OPENSCAD_PATH, '-o', stl_file_path, scad_file_path], check=True, capture_output=True, text=True)
             logging.info(f"OpenSCAD output: {result.stdout}")
         except FileNotFoundError:
             logging.error("OpenSCAD executable not found. Ensure it is installed and in the system's PATH.")

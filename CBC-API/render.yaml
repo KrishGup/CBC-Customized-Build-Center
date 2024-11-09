@@ -1,12 +1,9 @@
 services:
   - type: web
     name: cbc-api
-    env: python
+    env: docker
     plan: free
-    buildCommand: |
-      apt-get update && apt-get install -y openscad
-      pip install -r requirements.txt
-    startCommand: "gunicorn app:app"
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: FLASK_ENV
         value: production
