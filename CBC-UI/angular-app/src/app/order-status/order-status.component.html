@@ -1,3 +1,18 @@
-<p>
-  order-status works!
-</p>
+<div class="order-status-container">
+  <h2>Order Status Lookup</h2>
+  <div class="input-group">
+    <input [(ngModel)]="orderId" placeholder="Enter your order ID" />
+    <button (click)="getOrderTracking()">Lookup</button>
+  </div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="trackingInfo" class="tracking-info">
+    <p><strong>Status:</strong> {{ trackingInfo.status }}</p>
+    <p><strong>Tracking Numbers:</strong></p>
+    <ul>
+      <li *ngFor="let trackingNumber of trackingInfo.trackingNumbers">{{ trackingNumber }}</li>
+    </ul>
+  </div>
+  <div *ngIf="!trackingInfo && !errorMessage">
+    <p>Enter your order ID to see the tracking information.</p>
+  </div>
+</div>

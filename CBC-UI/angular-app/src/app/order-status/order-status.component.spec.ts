@@ -1,17 +1,21 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { OrderStatusComponent } from './order-status.component';
+import { ApiService } from '../api.service';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+import { NgModel } from '@angular/forms';
 
 describe('OrderStatusComponent', () => {
   let component: OrderStatusComponent;
   let fixture: ComponentFixture<OrderStatusComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrderStatusComponent ]
+      imports: [HttpClientModule, FormsModule],
+      declarations: [OrderStatusComponent],
+      providers: [ApiService]
     })
     .compileComponents();
   }));

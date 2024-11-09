@@ -5,11 +5,14 @@ import logging
 from flask import Flask, jsonify, request, send_file
 from flask_restful import Api, Resource
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
-OPENSCAD_PATH = '/app/openscad.AppImage'  # Update this path to the actual location of OpenSCAD executable on your system
+load_dotenv()
+OPENSCAD_PATH = './bin/openscad.exe'  # Update this path to the actual location of OpenSCAD executable on your system
+SLANT3D_API_KEY = os.getenv('SLANT3D_API_KEY')  # Read the API key from environment variables
 
 class HelloWorld(Resource):
     def get(self):
@@ -53,9 +56,19 @@ class GetStl(Resource):
             return jsonify({"error": "OpenSCAD process failed", "details": e.stderr}), 500
         return send_file(stl_file_path, mimetype='application/sla')
 
+class GetOrderTracking(Resource):
+    def get(self, order_id):
+        headers = {
+            'api-key': SLANT3D_API_KEY,
+            'Content-Type': 'application/json'
+        }
+        response = requests.get(f'https://www.slant3dapi.com/api/order/{order_id}/get-tracking', headers=headers)
+        return response.json()
+
 api.add_resource(HelloWorld, '/api/hello')
 api.add_resource(RenderScad, '/api/render')
 api.add_resource(GetStl, '/api/getstl')
+api.add_resource(GetOrderTracking, '/api/order/<string:order_id>/get-tracking')
 
 if __name__ == "__main__":
     app.run(debug=os.getenv('FLASK_ENV') != 'production')
