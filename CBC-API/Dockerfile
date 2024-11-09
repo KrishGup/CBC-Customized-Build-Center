@@ -17,8 +17,8 @@ RUN apt-get update && \
 RUN wget -O /app/openscad.AppImage https://files.openscad.org/OpenSCAD-2021.01-x86_64.AppImage && \
     chmod +x /app/openscad.AppImage
 
-# Check OpenSCAD version
-RUN /app/openscad.AppImage -v
+# Load fuse module and check OpenSCAD version
+RUN modprobe fuse && /app/openscad.AppImage -v
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
