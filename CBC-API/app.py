@@ -9,7 +9,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
-OPENSCAD_PATH = '/app/openscad.AppImage'  # Update this path to the actual location of OpenSCAD executable on your system
+OPENSCAD_PATH = './app/openscad.AppImage'  # Update this path to the actual location of OpenSCAD executable on your system
 
 class HelloWorld(Resource):
     def get(self):
