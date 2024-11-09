@@ -1,0 +1,10 @@
+<div class="container">
+  <p>home works!</p>
+  <textarea [(ngModel)]="scadCode" placeholder="Enter OpenSCAD code here"></textarea>
+  <button (click)="renderModel()">Render</button>
+  <button (click)="downloadScad()">Download SCAD</button>
+  <button (click)="downloadStl()">Download STL</button>
+  <div *ngIf="renderedModel" class="rendered-model">
+    <img [src]="renderedModel" alt="Rendered Model">
+  </div>
+</div>
