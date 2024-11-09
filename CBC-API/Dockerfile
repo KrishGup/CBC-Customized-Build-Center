@@ -9,15 +9,16 @@ COPY . /app
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y libfuse2 && \
+    apt-get install -y libfuse2 wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Make OpenSCAD AppImage executable
-RUN chmod +x ./bin/openscad.AppImage
+# Download and make OpenSCAD AppImage executable
+RUN wget -O /app/openscad.AppImage https://files.openscad.org/OpenSCAD-2021.01-x86_64.AppImage && \
+    chmod +x /app/openscad.AppImage
 
 # Check OpenSCAD version
-RUN ./bin/openscad.AppImage -v
+RUN /app/openscad.AppImage -v
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
