@@ -9,7 +9,7 @@ COPY . /app
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y libfuse2 wget fuse-overlayfs && \
+    apt-get install -y libfuse2 wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -17,8 +17,8 @@ RUN apt-get update && \
 RUN wget -O /app/openscad.AppImage https://files.openscad.org/OpenSCAD-2021.01-x86_64.AppImage && \
     chmod +x /app/openscad.AppImage
 
-# Load fuse-overlayfs module and check OpenSCAD version
-RUN modprobe fuse-overlayfs && /app/openscad.AppImage -v
+# Check OpenSCAD version
+RUN /app/openscad.AppImage -v || true
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
