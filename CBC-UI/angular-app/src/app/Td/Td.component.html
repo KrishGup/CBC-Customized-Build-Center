@@ -1,0 +1,14 @@
+<p>td works!</p>
+<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+  <label for="file">Upload STL/SCAD File:</label>
+  <input type="file" id="file" (change)="onFileChange($event)" />
+
+  <label for="filament">Select Filament:</label>
+  <select id="filament" formControlName="filament">
+    <option *ngFor="let filament of filaments" [value]="filament.filament">{{ filament.filament }}</option>
+  </select>
+
+  <button type="submit">Submit</button>
+</form>
+
+<p *ngIf="price">Estimated Price: {{ price }}</p>
