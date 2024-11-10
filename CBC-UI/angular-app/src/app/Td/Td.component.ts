@@ -56,6 +56,7 @@ export class TdComponent implements OnInit {
         // Upload the file to File.io and get the URL
         // const fileURL = await this.uploadFileToFileIo(file);
         const fileURL = await this.uploadFileToFileIo(file);
+        console.log(fileURL);
         const response = await lastValueFrom(this.apiService.sliceFile(fileURL));
         console.log(response);
         this.price = response.data.price; // Access the price within the data object
@@ -70,8 +71,14 @@ export class TdComponent implements OnInit {
   async uploadFileToFileIo(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
-
-    const response = await this.http.post<any>('https://file.io', formData).toPromise();
-    return response.link; // File.io returns the URL in the 'link' property
+    console.log("attempting upload")
+    const response = await this.http.post<any>('https://use08.thegood.cloud/apps/files/', formData, {
+      headers: {
+        'Authorization': 'Basic ' + btoa('krishgup1@gmail.com:HzZ9s-BSqe7-tJ9Zb-cxraw-cpom7')
+      }
+    }).toPromise();
+    console.log(response.url)
+    // Assuming the response contains the URL of the uploaded file
+    return response.url;
   }
 }
