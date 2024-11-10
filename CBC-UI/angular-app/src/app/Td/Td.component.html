@@ -1,4 +1,6 @@
-<p>td works!</p>
+<p>Below are the various option to upload the stl/SCAD file which will allow for the ability to choose a filament 
+  type which will be processed and provide an estimate for the pricing on the 3D print.</p>
+
 <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
   <label for="file">Upload STL/SCAD File:</label>
   <input type="file" id="file" (change)="onFileChange($event)" />
