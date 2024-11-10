@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
-load_dotenv()
+load_dotenv('.env')
 OPENSCAD_PATH = './bin/openscad.exe'  # Update this path to the actual location of OpenSCAD executable on your system
 SLANT3D_API_KEY = os.getenv('SLANT3D_API_KEY')  # Read the API key from environment variables
 UPLOAD_FOLDER = 'uploads'
