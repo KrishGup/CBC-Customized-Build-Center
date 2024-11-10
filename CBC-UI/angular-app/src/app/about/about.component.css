@@ -1,0 +1,18 @@
+mat-card {
+  margin: 20px;
+  padding: 20px;
+}
+
+mat-card-content h3, mat-card-content h4 {
+  margin-top: 20px;
+}
+
+mat-card-content ul, mat-card-content ol {
+  margin-left: 20px;
+}
+
+mat-card-content pre {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+}
