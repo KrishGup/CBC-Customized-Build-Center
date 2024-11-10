@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-Td',
@@ -17,7 +19,7 @@ export class TdComponent implements OnInit {
   selectedFilament: any;
   price: string = "N/A";
 
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private http: HttpClient) {
     this.uploadForm = this.fb.group({
       file: [null],
       filament: ['']
@@ -37,8 +39,8 @@ export class TdComponent implements OnInit {
 
   getFilaments() {
     this.apiService.getFilaments().subscribe({
-      next: (data: any[]) => {
-        this.filaments = data;
+      next: (response: { filaments: any[] }) => {
+        this.filaments = response.filaments;
       },
       error: (error) => {
         console.error('Error fetching filaments', error);
@@ -46,18 +48,40 @@ export class TdComponent implements OnInit {
     });
   }
 
-  //define onsubmit
-  onSubmit() {
-    const formData = new FormData();
-    formData.append('file', this.uploadForm.get('file')!.value);
-    formData.append('filament', this.uploadForm.get('filament')!.value);
-    this.apiService.uploadFile(formData).subscribe({
-      next: (data) => {
-        this.price = data.price;
-      },
-      error: (error) => {
-        console.error('Error uploading file', error);
+  async onSubmit() {
+    const file = this.uploadForm.get('file')!.value;
+
+    if (file) {
+      try {
+        // Upload the file to File.io and get the URL
+        // const fileURL = await this.uploadFileToFileIo(file);
+        const fileURL = await this.uploadFileToFileIo(file);
+        console.log(fileURL);
+        const response = await lastValueFrom(this.apiService.sliceFile(fileURL));
+        console.log(response);
+        this.price = response.data.price; // Access the price within the data object
+        // print response
+
+      } catch (error) {
+        console.error('Error uploading file or slicing', error);
       }
-    });
+    }
+  }
+
+  async uploadFileToFileIo(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await this.http.request('PUT', 'https://use08.thegood.cloud/remote.php/webdav/' + file.name, {
+      body: file,
+      headers: {
+        'Authorization': 'Basic ' + btoa('krishgup1@gmail.com:HzZ9s-BSqe7-tJ9Zb-cxraw-cpom7')
+      },
+      responseType: 'text'
+    }).toPromise();
+
+    // Construct the file URL
+    const fileURL = `https://use08.thegood.cloud/remote.php/webdav/${file.name}`;
+    return fileURL;
   }
 }
