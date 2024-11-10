@@ -12,11 +12,10 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
-load_dotenv()
+load_dotenv('.env')
 OPENSCAD_PATH = './bin/openscad.exe'  # Update this path to the actual location of OpenSCAD executable on your system
 SLANT3D_API_KEY = os.getenv('SLANT3D_API_KEY')  # Read the API key from environment variables
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 class HelloWorld(Resource):
     def get(self):
@@ -69,23 +68,12 @@ class GetOrderTracking(Resource):
         response = requests.get(f'https://www.slant3dapi.com/api/order/{order_id}/get-tracking', headers=headers)
         return response.json()
 
-class FileUpload(Resource):
-    def post(self):
-        if 'file' not in request.files:
-            return jsonify({"error": "No file part"}), 400
-        file = request.files['file']
-        if file.filename == '':
-            return jsonify({"error": "No selected file"}), 400
-        if file:
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            return jsonify({"fileUrl": file_path}), 200
 
 class SliceFile(Resource):
     def post(self):
         data = request.get_json()
         file_url = data['fileURL']
+        print(file_url)
         response = requests.post('https://www.slant3dapi.com/api/slicer', json={'fileURL': file_url}, headers={
             'api-key': SLANT3D_API_KEY,
             'Content-Type': 'application/json'
@@ -104,7 +92,6 @@ api.add_resource(HelloWorld, '/api/hello')
 api.add_resource(RenderScad, '/api/render')
 api.add_resource(GetStl, '/api/getstl')
 api.add_resource(GetOrderTracking, '/api/order/<string:order_id>/get-tracking')
-api.add_resource(FileUpload, '/api/upload')
 api.add_resource(SliceFile, '/api/slice-file')
 api.add_resource(GetFilaments, '/api/filaments')
 

@@ -27,10 +27,6 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/order/${orderId}/get-tracking`);
   }
 
-  uploadFile(fileData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/upload`, fileData);
-  }
-
   sliceFile(fileUrl: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/slice-file`, { fileURL: fileUrl });
   }
