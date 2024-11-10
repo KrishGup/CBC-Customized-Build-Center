@@ -71,14 +71,17 @@ export class TdComponent implements OnInit {
   async uploadFileToFileIo(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
-    console.log("attempting upload")
-    const response = await this.http.post<any>('https://use08.thegood.cloud/apps/files/', formData, {
+
+    const response = await this.http.request('PUT', 'https://use08.thegood.cloud/remote.php/webdav/' + file.name, {
+      body: file,
       headers: {
         'Authorization': 'Basic ' + btoa('krishgup1@gmail.com:HzZ9s-BSqe7-tJ9Zb-cxraw-cpom7')
-      }
+      },
+      responseType: 'text'
     }).toPromise();
-    console.log(response.url)
-    // Assuming the response contains the URL of the uploaded file
-    return response.url;
+
+    // Construct the file URL
+    const fileURL = `https://use08.thegood.cloud/remote.php/webdav/${file.name}`;
+    return fileURL;
   }
 }
