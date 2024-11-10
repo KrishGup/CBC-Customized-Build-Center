@@ -1,4 +1,9 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+<<<<<<< HEAD
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/pages/main/app.component';
+=======
+>>>>>>> cd4df53096ab4bccad9330211e028473fd9a0e92
 import { AppComponent } from './app/pages/main/app.component';
 import { provideHttpClient } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
